@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectsComposition", "ObjectsComposition\ObjectsComposition.csproj", "{248FDCC4-E3D2-4C77-BB48-BE0D01268989}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectsCompositionTest", "ObjectsCompositionTest\ObjectsCompositionTest.csproj", "{9213D004-6821-45CB-85D0-DFBA342180A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{248FDCC4-E3D2-4C77-BB48-BE0D01268989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{248FDCC4-E3D2-4C77-BB48-BE0D01268989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{248FDCC4-E3D2-4C77-BB48-BE0D01268989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{248FDCC4-E3D2-4C77-BB48-BE0D01268989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9213D004-6821-45CB-85D0-DFBA342180A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9213D004-6821-45CB-85D0-DFBA342180A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9213D004-6821-45CB-85D0-DFBA342180A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9213D004-6821-45CB-85D0-DFBA342180A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {215E2436-80DF-454C-88D2-DF3E70895F12}
+	EndGlobalSection
+EndGlobal
