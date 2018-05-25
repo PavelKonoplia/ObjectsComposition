@@ -7,5 +7,7 @@ namespace ObjectsComposition.Interfaces
         HttpListener HttpListener { get; set; }
 
         void Listen(string url);
+
+        void Stop();
     }
 }

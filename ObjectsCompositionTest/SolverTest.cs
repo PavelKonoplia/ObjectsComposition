@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ObjectsComposition.Interfaces;
+using ObjectsComposition.Models;
 
 namespace ObjectsCompositionTest
 {
@@ -11,7 +13,7 @@ namespace ObjectsCompositionTest
         public void CreateOrUpdate_returnNotEmptyString()
         {
             ISolver solver;
-            object o = null;
+            BaseModel o = null;
             string response = solver.CreateOrUpdate(o);
 
             Assert.IsTrue(response.Length > 0);
@@ -21,7 +23,7 @@ namespace ObjectsCompositionTest
         public void Validate_Null_False()
         {
             ISolver solver;
-            object o = null;
+            XmlDocument o = null;
             bool valid = solver.Validate(o);
 
             Assert.IsFalse(valid);
@@ -31,8 +33,8 @@ namespace ObjectsCompositionTest
         public void ObjectFromXml_NotValidXml_Null()
         {
             ISolver solver;
-            string notValidXml = "not valid";
-            object o = solver.ObjectFromXml(notValidXml);
+            XmlDocument notValidXml = "not valid";
+            BaseModel o = solver.ObjectFromXml(notValidXml);
 
             Assert.IsNull(o);
         }

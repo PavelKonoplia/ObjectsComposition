@@ -1,11 +1,14 @@
-﻿namespace ObjectsComposition.Interfaces
+﻿using System.Xml;
+using ObjectsComposition.Models;
+
+namespace ObjectsComposition.Interfaces
 {
     public interface ISolver
     {
-        object ObjectFromXml(string xml);
+        BaseModel ObjectFromXml(XmlDocument xml);
 
-        bool Validate(object o);
+        string CreateOrUpdate(BaseModel bm);
 
-        string CreateOrUpdate(object o);
+        bool Validate(XmlDocument xml);
     }
 }

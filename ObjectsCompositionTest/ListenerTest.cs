@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ObjectsComposition.Interfaces;
 
 namespace ObjectsCompositionTest
@@ -15,7 +14,7 @@ namespace ObjectsCompositionTest
             string testUrl = "http://localhost:8888/connection/";
             listener.Listen(testUrl);
 
-            Assert.Equals(listener.HttpListener.IsListening,true);            
+            Assert.Equals(listener.HttpListener.IsListening, true);            
         }
     }
 }
