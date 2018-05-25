@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace ObjectsComposition.Models
 {
+    [Serializable]
     public abstract class BaseModel
     {
+        public BaseModel() { }
+
+        protected BaseModel(int id)
+        {
+            Id = id;
+        }
+
         public int Id { get; set; }
     }
 }
