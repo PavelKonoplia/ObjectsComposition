@@ -33,7 +33,7 @@ namespace ObjectsCompositionTest
         public void ObjectFromXml_NotValidXml_Null()
         {
             ISolver solver;
-            XmlDocument notValidXml = "not valid";
+            XmlDocument notValidXml = null ;
             BaseModel o = solver.ObjectFromXml(notValidXml);
 
             Assert.IsNull(o);
