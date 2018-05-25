@@ -14,9 +14,9 @@ namespace ObjectsCompositionTest
         {
             ISolver solver;
             BaseModel o = null;
-            string response = solver.CreateOrUpdate(o);
+            bool response = solver.CreateOrUpdate(o);
 
-            Assert.IsTrue(response.Length > 0);
+            Assert.IsFalse(response);
         }
 
         [TestMethod]
