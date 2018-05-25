@@ -1,0 +1,7 @@
+C:\Repos\ObjectsComposition\ObjectsComposition\bin\Debug\ObjectsComposition.exe.config
+C:\Repos\ObjectsComposition\ObjectsComposition\bin\Debug\ObjectsComposition.exe
+C:\Repos\ObjectsComposition\ObjectsComposition\bin\Debug\ObjectsComposition.pdb
+C:\Repos\ObjectsComposition\ObjectsComposition\obj\Debug\ObjectsComposition.csprojResolveAssemblyReference.cache
+C:\Repos\ObjectsComposition\ObjectsComposition\obj\Debug\ObjectsComposition.csproj.CoreCompileInputs.cache
+C:\Repos\ObjectsComposition\ObjectsComposition\obj\Debug\ObjectsComposition.exe
+C:\Repos\ObjectsComposition\ObjectsComposition\obj\Debug\ObjectsComposition.pdb

@@ -1,0 +1,17 @@
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\ObjectsCompositionTest.dll
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\ObjectsCompositionTest.pdb
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\ObjectsComposition.exe
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\ObjectsComposition.pdb
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\ObjectsComposition.exe.config
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\obj\Debug\ObjectsCompositionTest.csprojResolveAssemblyReference.cache
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\obj\Debug\ObjectsCompositionTest.csproj.CoreCompileInputs.cache
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\obj\Debug\ObjectsCompositionTest.csproj.CopyComplete
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\obj\Debug\ObjectsCompositionTest.dll
+C:\Repos\ObjectsComposition\ObjectsCompositionTest\obj\Debug\ObjectsCompositionTest.pdb

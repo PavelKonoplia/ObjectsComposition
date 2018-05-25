@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ObjectsComposition.Interfaces;
+using ObjectsComposition.Logic;
 
 namespace ObjectsCompositionTest
 {
@@ -9,10 +10,11 @@ namespace ObjectsCompositionTest
         [TestMethod]
         public void Listen_url_start_IsListening()
         {
-            IListener listener;
-
             string testUrl = "http://localhost:8888/connection/";
-            listener.Listen(testUrl);
+
+            IListener listener = new Listener(testUrl);
+
+            listener.Listen();
 
             Assert.Equals(listener.HttpListener.IsListening, true);            
         }

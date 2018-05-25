@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,11 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Collection.cs" />
     <Compile Include="Common\ObjectException.cs" />
     <Compile Include="Interfaces\IListener.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISolver.cs" />
+    <Compile Include="Logic\DbLogic\CommandRunner.cs" />
+    <Compile Include="Logic\DbLogic\DataProvider.cs" />
+    <Compile Include="Logic\Listener.cs" />
+    <Compile Include="Logic\Solver.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\HappenedException.cs" />
+    <Compile Include="Models\Manufacter.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

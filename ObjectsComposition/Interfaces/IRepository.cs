@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using ObjectsComposition.Models;
 
 namespace ObjectsComposition.Interfaces
 {
@@ -12,7 +9,7 @@ namespace ObjectsComposition.Interfaces
 
         T GetItemById(int itemId);
 
-        void Create(T item);
+        int Create(T item);
 
         void Update(T item);
 

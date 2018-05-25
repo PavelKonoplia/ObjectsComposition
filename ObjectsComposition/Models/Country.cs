@@ -10,6 +10,14 @@ namespace ObjectsComposition.Models
     {
         public Country() { }
 
+        public Country(string name, string language, int population, string president)
+        {
+            Name = name;
+            Language = language;
+            Population = population;
+            President = president;
+        }
+
         public Country(int id, string name, string language, int population, string president) : base(id)
         {
             Name = name;

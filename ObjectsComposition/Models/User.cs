@@ -13,6 +13,14 @@ namespace ObjectsComposition.Models
     {
         public User() { }
 
+        public User(string name, string login, string password, int age)
+        {
+            Name = name;
+            Login = login;
+            Password = password;
+            Age = age;
+        }
+
         public User(int id, string name, string login, string password, int age) : base(id)
         {
             Name = name;

@@ -10,6 +10,14 @@ namespace ObjectsComposition.Models
     {
         public Product() { }
 
+        public Product(string name, int batch, string produced, int price)
+        {
+            Name = name;
+            Batch = batch;
+            Produced = produced;
+            Price = price;
+        }
+
         public Product(int id, string name, int batch, string produced, int price) : base(id)
         {
             Name = name;

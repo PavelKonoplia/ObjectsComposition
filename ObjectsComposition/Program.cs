@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ObjectsComposition.Logic;
 
 namespace ObjectsComposition
 {
@@ -10,6 +6,11 @@ namespace ObjectsComposition
     {
         public static void Main(string[] args)
         {
+            string port = "http://localhost:8888/";
+
+            Listener listener = new Listener(port);
+
+            listener.Listen();
         }
     }
 }

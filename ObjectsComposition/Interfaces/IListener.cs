@@ -4,9 +4,9 @@ namespace ObjectsComposition.Interfaces
 {
     public interface IListener
     {
-        HttpListener HttpListener { get; set; }
+        HttpListener HttpListener { get; }
 
-        void Listen(string url);
+        void Listen();
 
         void Stop();
     }

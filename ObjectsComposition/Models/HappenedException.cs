@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace ObjectsComposition.Models
 {
-    public class ObjectExceptionModel : BaseModel
+    public class HappenedException : BaseModel
     {
-        public ObjectExceptionModel() { }
+        public HappenedException() { }
 
-        public ObjectExceptionModel(int id, string exceptionType, string exeptionMessage) : base(id)
+        public HappenedException(string exceptionType, string exeptionMessage)
+        {
+            ExceptionType = exceptionType;
+            ExceptionMessage = exeptionMessage;
+        }
+
+        public HappenedException(int id, string exceptionType, string exeptionMessage) : base(id)
         {
             ExceptionType = exceptionType;
             ExceptionMessage = exeptionMessage;
