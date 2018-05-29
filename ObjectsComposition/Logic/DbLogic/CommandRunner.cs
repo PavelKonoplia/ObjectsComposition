@@ -53,12 +53,12 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public T GetItemById(int id)
         {
-            string lowerTypeName = typeT.Name.ToLower(), condition = "";
+            string condition = "";
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             for (int i = 0; i < propsInfo.Length; i++)
             {
-                if (propsInfo[i].Name.ToString().ToLower().Contains(lowerTypeName + "id"))
+                if (propsInfo[i].Name.ToString().ToLower().Contains("id"))
                 {
                     condition += propsInfo[i].Name + "=" + id;
                     break;
@@ -77,9 +77,10 @@ namespace ObjectsComposition.Logic.DbLogic
                 {
                     adapter.Fill(ds);
                     object instance = Activator.CreateInstance(typeT);
-                    for (int j = 0; j < ds.Tables[0].Rows[0].ItemArray.Length; j++)
+
+                    foreach (PropertyInfo prop in propsInfo)
                     {
-                        propsInfo[j].SetValue(instance, ds.Tables[0].Rows[0].ItemArray[j], null);
+                        prop.SetValue(instance, ds.Tables[0].Rows[0][prop.Name], null);
                     }
 
                     item = (T)instance;
@@ -98,7 +99,6 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public int Create(T item)
         {
-            string lowerTypeName = typeT.Name.ToLower();
             string columns = "", props = "", tempProp;
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
@@ -108,15 +108,22 @@ namespace ObjectsComposition.Logic.DbLogic
                 {
                     continue;
                 }
-                columns += i == propsInfo.Length - 1 ? propsInfo[i].Name : propsInfo[i].Name + ",";
+
+                if (i != 0 && i != propsInfo.Length - 1)
+                {
+                    props += ",";
+                    columns += ",";
+                }
+
+                columns += propsInfo[i].Name;
                 tempProp = propsInfo[i].PropertyType.ToString().Contains("String")
                     ? "\'" + GetPropValue(item, propsInfo[i].Name) + "\'"
                     : GetPropValue(item, propsInfo[i].Name).ToString();
-                props += i == propsInfo.Length - 1 ? tempProp : tempProp + ",";
+                props += tempProp;
             }
 
             string sqlExpression = $"INSERT INTO {tableName} ({columns}) VALUES ({props})";
-            string sqlExpressionGetId = $"SELECT LAST(Id) FROM {tableName}";
+            string sqlExpressionGetId = $"SELECT MAX(ID) FROM {tableName}";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -126,13 +133,8 @@ namespace ObjectsComposition.Logic.DbLogic
                 try
                 {
                     command.ExecuteNonQuery();
-                    SqlDataReader reader = resultId.ExecuteReader();
-                    while (reader.Read()) // построчно считываем данные
-                    {
-                        return (int)reader.GetValue(0);
-                    }
-
-                    throw new IncorrectObjectIdException();
+                    var res = (int)resultId.ExecuteScalar();
+                    return (int)resultId.ExecuteScalar();
                 }
                 catch (Exception e)
                 {
@@ -143,22 +145,22 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public void Update(T item)
         {
-            string lowerTypeName = typeT.Name.ToLower();
             string props = "", condition = "", tempProp;
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             for (int i = 0; i < propsInfo.Length; i++)
             {
-                if (propsInfo[i].Name.ToString().ToLower().Contains(lowerTypeName + "id"))
+                if (propsInfo[i].Name.ToString().ToLower().Contains("id"))
                 {
                     condition = propsInfo[i].Name + "=" + GetPropValue(item, propsInfo[i].Name).ToString();
                     continue;
                 }
 
+                props += (i != 0 && i != propsInfo.Length - 1) ? "," : "";
                 tempProp = propsInfo[i].PropertyType.ToString().Contains("String")
                      ? "\'" + GetPropValue(item, propsInfo[i].Name) + "\'"
                      : GetPropValue(item, propsInfo[i].Name).ToString();
-                props += i == propsInfo.Length - 1 ? propsInfo[i].Name + "=" + tempProp : propsInfo[i].Name + "=" + tempProp + ",";
+                props += $"{propsInfo[i].Name}={tempProp}";
             }
 
             string sqlExpression = $"UPDATE {tableName} SET {props} WHERE {condition}";
@@ -172,24 +174,23 @@ namespace ObjectsComposition.Logic.DbLogic
                 {
                     command.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Error on updating Item, check your model. \n");
+                    throw e;
                 }
             }
         }
 
         public void Delete(int id)
         {
-            string lowerTypeName = typeT.Name.ToLower();
             string condition = "";
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             for (int i = 0; i < propsInfo.Length; i++)
             {
-                if (propsInfo[i].Name.ToString().ToLower().Contains(lowerTypeName + "id"))
+                if (propsInfo[i].Name.ToString().ToLower().Contains("id"))
                 {
-                    condition = propsInfo[i].Name + "=" + id;
+                    condition = $"{propsInfo[i].Name}={id}";
                     break;
                 }
             }

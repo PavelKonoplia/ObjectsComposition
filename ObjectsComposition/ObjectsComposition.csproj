@@ -43,11 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Attributes\EncryptionAttribute.cs" />
     <Compile Include="Common\Collection.cs" />
+    <Compile Include="Common\Interfaces\IEncryptionService.cs" />
     <Compile Include="Common\ObjectException.cs" />
-    <Compile Include="Interfaces\IListener.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\ISolver.cs" />
+    <Compile Include="Common\Interfaces\IListener.cs" />
+    <Compile Include="Common\Interfaces\IRepository.cs" />
+    <Compile Include="Common\Interfaces\ISolver.cs" />
+    <Compile Include="Common\Services\EncryptionService.cs" />
     <Compile Include="Logic\DbLogic\CommandRunner.cs" />
     <Compile Include="Logic\DbLogic\DataProvider.cs" />
     <Compile Include="Logic\Listener.cs" />

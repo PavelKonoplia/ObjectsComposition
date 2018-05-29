@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using ObjectsComposition.Common.Attributes;
+
 
 namespace ObjectsComposition.Models
 {
+    [Serializable]
     public class Product : BaseModel
     {
         public Product() { }
+        public Product(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         public Product(string name, int batch, string produced, int price)
         {
@@ -26,12 +27,13 @@ namespace ObjectsComposition.Models
             Price = price;
         }
 
-        public string Name { get; }
+        [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
+        public string Name { get; set; }
 
-        public int Batch { get; }
+        public int Batch { get; set; }
 
-        public string Produced { get; }
+        public string Produced { get; set; }
 
-        public int Price { get; }
+        public int Price { get; set; }
     }
 }

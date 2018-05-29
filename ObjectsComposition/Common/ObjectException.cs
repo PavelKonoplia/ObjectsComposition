@@ -21,9 +21,9 @@ namespace ObjectsComposition.Common
         public NoEncryptionException() : base("No encryption in the model on attributed fields") { }
     }
 
-    public class IncorrectEnscryptionException : ObjectException
+    public class IncorrectEncryptionException : ObjectException
     {
-        public IncorrectEnscryptionException() : base("Incorrect enscryption algorithm") { }
+        public IncorrectEncryptionException() : base("Incorrect enscryption algorithm") { }
     }
 
     public class IncorrectObjectIdException : ObjectException

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ObjectsComposition.Models
 {
+    [Serializable]
     public class Country : BaseModel
     {
         public Country() { }
@@ -26,12 +27,12 @@ namespace ObjectsComposition.Models
             President = president;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public string Language { get; }
+        public string Language { get; set; }
 
-        public int Population { get; }
+        public int Population { get; set; }
 
-        public string President { get; }
+        public string President { get; set; }
     }
 }

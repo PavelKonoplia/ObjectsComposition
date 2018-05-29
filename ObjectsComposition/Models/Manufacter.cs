@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ObjectsComposition.Models
 {
+    [Serializable]
     public class Manufacter : BaseModel
     {
         public Manufacter() { }
@@ -26,12 +27,12 @@ namespace ObjectsComposition.Models
             Address = address;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public string Country { get; }
+        public string Country { get; set; }
 
-        public string City { get; }
+        public string City { get; set; }
 
-        public string Address { get; }
+        public string Address { get; set; }
     }
 }

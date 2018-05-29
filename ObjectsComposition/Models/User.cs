@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObjectsComposition.Common.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,11 @@ using System.Xml.Serialization;
 namespace ObjectsComposition.Models
 {
     [Serializable]
-    [XmlRoot("User")]
     public class User : BaseModel
     {
-        public User() { }
+        public User() : base() { }
 
-        public User(string name, string login, string password, int age)
+        public User(string name, string login, string password, int age) : base()
         {
             Name = name;
             Login = login;
@@ -29,12 +29,14 @@ namespace ObjectsComposition.Models
             Age = age;
         }
 
+        [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
         public string Name { get; set; }
-        
-        public int Age { get; set; }
 
         public string Login { get; set; }
 
+        [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
         public string Password { get; set; }
+
+        public int Age { get; set; }
     }
 }

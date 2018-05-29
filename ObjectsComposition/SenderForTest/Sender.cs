@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ObjectsComposition.SenderForTest
 {
-    class Sender
+    public class Sender
     {
         // here is code for main class of test client program
 

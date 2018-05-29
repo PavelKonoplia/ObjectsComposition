@@ -13,7 +13,7 @@ namespace ObjectsComposition.Logic.DbLogic
             CountryRepository = new CommandRunner<Country>(connectionString);
             HappenedExceptionRepository = new CommandRunner<HappenedException>(connectionString);
         }
-
+        
         public IRepository<User> UserRepository { get; }
 
         public IRepository<Product> ProductRepository { get; }
