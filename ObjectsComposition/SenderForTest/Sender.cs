@@ -13,21 +13,23 @@ namespace ObjectsComposition.SenderForTest
         /*
         static void Main(string[] args)
         {
-            User person = new User("Tom", "MeTom", "qwerty", 23);
+            User person = new User("Banaan","Waaan","qwerty",23);
+
+            Product prod = new Product(2, "Hammer", 9532, "Germany", 499);
 
             string xml = "";
 
             XmlSerializer formatter = new XmlSerializer(typeof(User));
-
+    
             using (var sww = new StringWriter())
             {
                 using (XmlWriter writer = XmlWriter.Create(sww))
                 {
                     formatter.Serialize(writer, person);
-                    xml = sww.ToString();
+                    xml = sww.ToString(); 
                 }
             }
-
+            
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             SendXML(doc);
