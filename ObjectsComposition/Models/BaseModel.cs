@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using ObjectsComposition.Common;
 using ObjectsComposition.Common.Attributes;
 using ObjectsComposition.Common.Interfaces;
@@ -8,7 +11,7 @@ using ObjectsComposition.Common.Interfaces;
 namespace ObjectsComposition.Models
 {
     [Serializable]
-    public abstract class BaseModel : ISerializable
+    public abstract class BaseModel : IXmlSerializable
     {
         public BaseModel() { }
 
@@ -19,7 +22,7 @@ namespace ObjectsComposition.Models
 
         public int Id { get; set; }
 
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void WriteXml(XmlWriter writer)
         {
             Type type = GetType();
             IEncryptionService encryptionService;
@@ -33,11 +36,11 @@ namespace ObjectsComposition.Models
                 {
                     encryptionAttribute = Attribute.GetCustomAttribute(prop, typeof(EncryptionAttribute)) as EncryptionAttribute;
                     encryptionService = encryptionAttribute.EncryptionService;
-                    info.AddValue(prop.Name, encryptionService.Encrypt(prop.GetMethod));
+                    writer.WriteElementString(prop.Name, Convert.ToBase64String(encryptionService.Encrypt(prop.GetValue(this))));
                 }
                 else
                 {
-                    info.AddValue(prop.Name, prop.GetMethod);
+                    writer.WriteElementString(prop.Name, prop.GetValue(this).ToString());
                 }
             }
 
@@ -47,89 +50,97 @@ namespace ObjectsComposition.Models
                 {
                     encryptionAttribute = Attribute.GetCustomAttribute(field, typeof(EncryptionAttribute)) as EncryptionAttribute;
                     encryptionService = encryptionAttribute.EncryptionService;
-                    info.AddValue(field.Name, encryptionService.Encrypt(field.GetValue(field.GetType())));
+                    writer.WriteValue(encryptionService.Encrypt(field.GetValue(this)));
                 }
                 else
                 {
-                    info.AddValue(field.Name, field.GetValue(field.GetType()));
+                    writer.WriteValue(field.GetValue(this));
                 }
             }
         }
 
-        public BaseModel(SerializationInfo info, StreamingContext context)
+        public void ReadXml(XmlReader reader)
         {
             Type type = GetType();
             IEncryptionService encryptionService;
             EncryptionAttribute encryptionAttribute;
-            PropertyInfo[] propsInfos = type.GetProperties();
-            FieldInfo[] fieldsInfos = type.GetFields();
-
-            try
+            reader.MoveToContent();
+            while (reader.Read())
             {
-                foreach (PropertyInfo prop in propsInfos)
+                if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (Attribute.IsDefined(prop, typeof(EncryptionAttribute)))
+                    PropertyInfo property = type.GetProperty(reader.Name);
+                    FieldInfo field = type.GetField(reader.Name);
+                    if (reader.Read())
                     {
-                        encryptionAttribute = Attribute.GetCustomAttribute(prop, typeof(EncryptionAttribute)) as EncryptionAttribute;
-                        encryptionService = encryptionAttribute.EncryptionService;
+                        string val = reader.Value;
+                        if (property != null)
+                        {
+                            if (Attribute.IsDefined(property, typeof(EncryptionAttribute)))
+                            {
+                                encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
+                                encryptionService = encryptionAttribute.EncryptionService;
 
-                        try
-                        {
-                            prop.SetValue(this, info.GetValue(prop.Name, prop.PropertyType));
-                            throw new NoEncryptionException();
-                        }
-                        catch (Exception)
-                        {
-                            try
-                            {
-                                prop.SetValue(this, encryptionService.Decrypt((byte[])info.GetValue(prop.Name, typeof(byte[]))));
+                                if (Regex.IsMatch(val, @"^[a-zA-Z]+$"))
+                                {
+                                    reader.Close();
+                                    reader.Dispose();
+                                    throw new NoEncryptionException();
+                                }
+                                else
+                                {
+                                    byte[] bytes = Convert.FromBase64String(val);
+                                    var value = encryptionService.Decrypt(bytes);
+                                    property.SetValue(this, encryptionService.Decrypt(bytes));
+                                }
                             }
-                            catch (Exception)
+                            else
                             {
-                                throw new IncorrectEncryptionException();
-                            }
-                        }                       
-                    }
-                    else
-                    {
-                        prop.SetValue(this, info.GetValue(prop.Name, prop.PropertyType));
-                    }
-                }
-
-                foreach (FieldInfo field in fieldsInfos)
-                {
-                    if (Attribute.IsDefined(field, typeof(EncryptionAttribute)))
-                    {
-                        encryptionAttribute = Attribute.GetCustomAttribute(field, typeof(EncryptionAttribute)) as EncryptionAttribute;
-                        encryptionService = encryptionAttribute.EncryptionService;
-
-                        try
-                        {
-                            field.SetValue(this, info.GetValue(field.Name, field.GetType()));
-                            throw new NoEncryptionException();
-                        }
-                        catch (Exception)
-                        {
-                            try
-                            {
-                                field.SetValue(this, encryptionService.Decrypt((byte[])info.GetValue(field.Name, typeof(byte[]))));
-                            }
-                            catch (Exception)
-                            {
-                                throw new IncorrectEncryptionException();
+                                property.SetValue(this, Convert.ChangeType(val, property.PropertyType));
                             }
                         }
-                    }
-                    else
-                    {
-                        field.SetValue(this, info.GetValue(field.Name, field.GetType()));
+                        else
+                        {
+                            if (field != null)
+                            {
+                                if (Attribute.IsDefined(field, typeof(EncryptionAttribute)))
+                                {
+                                    encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
+                                    encryptionService = encryptionAttribute.EncryptionService;
+
+                                    if (Regex.IsMatch(val, @"^[a-zA-Z]+$"))
+                                    {
+                                        reader.Close();
+                                        reader.Dispose();
+                                        throw new NoEncryptionException();
+                                    }
+                                    else
+                                    {
+                                        byte[] bytes = Convert.FromBase64String(val);
+                                        var value = encryptionService.Decrypt(bytes);
+                                        field.SetValue(this, encryptionService.Decrypt(bytes));
+                                    }
+                                }
+                                else
+                                {
+                                    field.SetValue(this, Convert.ChangeType(val, field.FieldType));
+                                }
+                            }
+                            else
+                            {
+                                reader.Close();
+                                reader.Dispose();
+                                throw new IncorectFormatException();
+                            }
+                        }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }                        
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
         }
 
         protected void GetServiceFromAttribute(PropertyInfo property)

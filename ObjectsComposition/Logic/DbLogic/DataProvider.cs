@@ -1,8 +1,16 @@
-﻿using ObjectsComposition.Interfaces;
+﻿using System.Configuration;
+using ObjectsComposition.Interfaces;
 using ObjectsComposition.Models;
 
 namespace ObjectsComposition.Logic.DbLogic
 {
+    public static class ExceptionProvider
+    {
+        public static IRepository<HappenedException> HappenedExceptionRepository = new CommandRunner<HappenedException>(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+
+       // private static string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+    }
+
     public class DataProvider
     {
         public DataProvider(string connectionString)
@@ -11,7 +19,6 @@ namespace ObjectsComposition.Logic.DbLogic
             ProductRepository = new CommandRunner<Product>(connectionString);
             ManufacterRepository = new CommandRunner<Manufacter>(connectionString);
             CountryRepository = new CommandRunner<Country>(connectionString);
-            HappenedExceptionRepository = new CommandRunner<HappenedException>(connectionString);
         }
         
         public IRepository<User> UserRepository { get; }
@@ -20,8 +27,6 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public IRepository<Manufacter> ManufacterRepository { get; }
 
-        public IRepository<Country> CountryRepository { get; }
-
-        public IRepository<HappenedException> HappenedExceptionRepository { get; }
+        public IRepository<Country> CountryRepository { get; }        
     }
 }

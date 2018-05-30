@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using ObjectsComposition.Common.Interfaces;
 
-namespace ObjectsComposition.Common.Attributes
+namespace PortSender
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class EncryptionAttribute : Attribute
@@ -25,7 +24,7 @@ namespace ObjectsComposition.Common.Attributes
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine(ex.Message);
             }
         }
     }

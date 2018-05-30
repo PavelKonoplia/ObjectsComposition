@@ -10,15 +10,6 @@ namespace ObjectsCompositionTest
     [TestClass]
     public class SolverTest
     {
-        [TestMethod]
-        public void CreateOrUpdate_returnNotEmptyString()
-        {
-            ISolver solver = new Solver();
-            BaseModel o = null;
-            bool response = solver.CreateOrUpdate(o);
-
-            Assert.IsFalse(response);
-        }
 
         [TestMethod]
         public void Validate_Null_False()

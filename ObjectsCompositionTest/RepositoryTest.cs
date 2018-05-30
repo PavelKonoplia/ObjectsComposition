@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ObjectsComposition.Interfaces;
+using ObjectsComposition.Logic.DbLogic;
 
 namespace ObjectsCompositionTest
 {
@@ -11,7 +12,7 @@ namespace ObjectsCompositionTest
         public void GetItems_returnIEnumerable()
         {
             /*
-            IRepository<object> repository;
+            DataProvider data =  new DataProvider("sdad");
 
             var result = repository.GetItems();
 

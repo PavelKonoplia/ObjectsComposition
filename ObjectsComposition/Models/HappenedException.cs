@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ObjectsComposition.Common;
 
 namespace ObjectsComposition.Models
 {
@@ -10,20 +6,26 @@ namespace ObjectsComposition.Models
     {
         public HappenedException() { }
 
+        public HappenedException(ObjectException exception)
+        {
+            Type = exception.GetType().ToString();
+            Description = exception.Message;
+        }
+
         public HappenedException(string exceptionType, string exeptionMessage)
         {
-            ExceptionType = exceptionType;
-            ExceptionMessage = exeptionMessage;
+            Type = exceptionType;
+            Description = exeptionMessage;
         }
 
         public HappenedException(int id, string exceptionType, string exeptionMessage) : base(id)
         {
-            ExceptionType = exceptionType;
-            ExceptionMessage = exeptionMessage;
+            Type = exceptionType;
+            Description = exeptionMessage;
         }
 
-        public string ExceptionType { get; }
+        public string Type { get; }
 
-        public string ExceptionMessage { get; }
+        public string Description { get; }
     }
 }

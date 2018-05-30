@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using ObjectsComposition.Common.Attributes;
 
-namespace ObjectsComposition.Models
+namespace PortSender
 {
     [Serializable]
     public class User : BaseModel
     {
         public User() : base() { }
-        
+
+       // public User(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
         public User(string name, string login, string password, int age) : base()
         {
             Name = name;
@@ -25,12 +26,11 @@ namespace ObjectsComposition.Models
             Age = age;
         }
 
-        [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
         public string Name { get; set; }
 
         public string Login { get; set; }
 
-        [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
+        [Encryption("PortSender.EncryptionService", 1111, 1111)]
         public string Password { get; set; }
 
         public int Age { get; set; }

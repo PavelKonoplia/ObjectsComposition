@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Xml;
 using ObjectsComposition.Common;
 using ObjectsComposition.Interfaces;
+using ObjectsComposition.Logic.DbLogic;
+using ObjectsComposition.Models;
 
 namespace ObjectsComposition.Logic
 {
@@ -22,41 +25,54 @@ namespace ObjectsComposition.Logic
 
         public void Listen()
         {
-            try
+            HttpListener.Start();
+            Console.WriteLine("Listening started");
+
+            while (true)
             {
-                HttpListener.Start();
-                Console.WriteLine("Listening started");
+                HttpListenerContext context = HttpListener.GetContext();
+                HttpListenerRequest request = context.Request;
+                HttpListenerResponse response = context.Response;
 
-                while (true)
+                string input;
+                using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
                 {
-                    HttpListenerContext context = HttpListener.GetContext();
-                    HttpListenerRequest request = context.Request;
-                    HttpListenerResponse response = context.Response;
+                    input = reader.ReadToEnd();
+                }
 
-                    string input;
-                    using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
-                    {
-                        input = reader.ReadToEnd();
-                    }
-
+                try
+                {
                     _solver.ObjectFromXml(ConvertStringToXml(input));
-                    
-                    // TODO response
-                    /*
-                    string responseString = "502";
-
-                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
-                    response.ContentLength64 = buffer.Length;
-                    Stream output = response.OutputStream;
-                    output.Write(buffer, 0, buffer.Length);
-
-                    output.Close();*/
+                    SendResponse(response, 200);
+                }
+                catch (ObjectException ex)
+                {
+                    SendResponse(response, 400);
+                    ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex));
+                }
+                catch (InvalidOperationException ex)
+                {
+                    SendResponse(response, 400);
+                    if (ex.InnerException is ObjectException)
+                    {
+                        ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex.InnerException as ObjectException));
+                    }
+                    else
+                    {
+                        throw ex;
+                    }                    
+                }                
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+        }
+
+        public void SendResponse(HttpListenerResponse response, int statusCode)
+        {
+            response.StatusCode = statusCode;
+            response.Close();
         }
 
         public void Stop()

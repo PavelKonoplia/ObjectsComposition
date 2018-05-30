@@ -9,6 +9,6 @@ namespace ObjectsComposition.Interfaces
         
         bool Validate(BaseModel model);
 
-        bool CreateOrUpdate(BaseModel bm);
+        void CreateOrUpdate(BaseModel bm);
     }
 }

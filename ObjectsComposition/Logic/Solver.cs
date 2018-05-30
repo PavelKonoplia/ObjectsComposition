@@ -26,129 +26,114 @@ namespace ObjectsComposition.Logic
 
         public BaseModel ObjectFromXml(XmlDocument xml)
         {
-            try
-            {
-                string inputModelxml = xml.DocumentElement.Name;
-               
-                Assembly ass = Assembly.GetExecutingAssembly();
-                ObjectHandle objectHandle = Activator.CreateInstance(ass.FullName, $"{typeof(BaseModel).Namespace}.{inputModelxml}");
-                BaseModel inputModel = (BaseModel)objectHandle.Unwrap();
-                SetSerializer(inputModel.GetType());
+            string inputModelxml = xml.DocumentElement.Name;
 
-                using (XmlReader reader = new XmlNodeReader(xml))
-                {
-                    BaseModel model = (BaseModel)_xmlSerializer.Deserialize(reader);
-                    CreateOrUpdate(model);
-                    if (Validate(model))
-                    {
-                        return model;
-                    }
-                }
-            }
-            catch (Exception)
+            Assembly ass = Assembly.GetExecutingAssembly();
+            ObjectHandle objectHandle = Activator.CreateInstance(ass.FullName, $"{typeof(BaseModel).Namespace}.{inputModelxml}");
+            BaseModel inputModel = (BaseModel)objectHandle.Unwrap();
+            SetSerializer(inputModel.GetType());
+
+            using (XmlReader reader = new XmlNodeReader(xml))
             {
-                throw;
+                BaseModel model = (BaseModel)_xmlSerializer.Deserialize(reader);
+                CreateOrUpdate(model);
+                if (Validate(model))
+                {
+                    return model;
+                }
             }
 
             return null;
         }
 
-        public bool CreateOrUpdate(BaseModel bm)
+        public void CreateOrUpdate(BaseModel bm)
         {
             BaseModel item;
-            try
+
+            if (bm is User)
             {
-                if (bm is User)
+                if (bm.Id != 0)
                 {
-                    if (bm.Id != 0)
+                    item = _dataProvider.UserRepository.GetItemById(bm.Id);
+                    if (item != null)
                     {
-                        item = _dataProvider.UserRepository.GetItemById(bm.Id);
-                        if (item != null)
-                        {
-                            _dataProvider.UserRepository.Update(bm as User);
-                            return true;
-                        }
+                        _dataProvider.UserRepository.Update(bm as User);
                     }
                     else
                     {
-                        _dataProvider.UserRepository.Create(bm as User);
-                        return true;
+                        throw new IncorrectObjectIdException();
                     }
                 }
-
-                if (bm is Manufacter)
+                else
                 {
-                    if (bm.Id != 0)
-                    {
-                        item = _dataProvider.ManufacterRepository.GetItemById(bm.Id);
-                        if (item != null)
-                        {
-                            _dataProvider.ManufacterRepository.Update(bm as Manufacter);
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        _dataProvider.ManufacterRepository.Create(bm as Manufacter);
-                        return true;
-                    }
-                }
-
-                if (bm is Product)
-                {
-                    if (bm.Id != 0)
-                    {
-                        item = _dataProvider.ProductRepository.GetItemById(bm.Id);
-                        if (item != null)
-                        {
-                            _dataProvider.ProductRepository.Update(bm as Product);
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        _dataProvider.ProductRepository.Create(bm as Product);
-                        return true;
-                    }
-                }
-
-                if (bm is Country)
-                {
-                    if (bm.Id != 0)
-                    {
-                        item = _dataProvider.CountryRepository.GetItemById(bm.Id);
-                        if (item != null)
-                        {
-                            _dataProvider.CountryRepository.Update(bm as Country);
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        _dataProvider.CountryRepository.Create(bm as Country);
-                        return true;
-                    }
+                    _dataProvider.UserRepository.Create(bm as User);
                 }
             }
-            catch (Exception)
+
+            if (bm is Manufacter)
             {
-                throw new IncorrectObjectIdException();
+                if (bm.Id != 0)
+                {
+                    item = _dataProvider.ManufacterRepository.GetItemById(bm.Id);
+                    if (item != null)
+                    {
+                        _dataProvider.ManufacterRepository.Update(bm as Manufacter);
+                    }
+                    else
+                    {
+                        throw new IncorrectObjectIdException();
+                    }
+                }
+                else
+                {
+                    _dataProvider.ManufacterRepository.Create(bm as Manufacter);
+                }
             }
 
-            return false;
+            if (bm is Product)
+            {
+                if (bm.Id != 0)
+                {
+                    item = _dataProvider.ProductRepository.GetItemById(bm.Id);
+                    if (item != null)
+                    {
+                        _dataProvider.ProductRepository.Update(bm as Product);
+                    }
+                    else
+                    {
+                        throw new IncorrectObjectIdException();
+                    }
+                }
+                else
+                {
+                    _dataProvider.ProductRepository.Create(bm as Product);
+                }
+            }
+
+            if (bm is Country)
+            {
+                if (bm.Id != 0)
+                {
+                    item = _dataProvider.CountryRepository.GetItemById(bm.Id);
+                    if (item != null)
+                    {
+                        _dataProvider.CountryRepository.Update(bm as Country);
+                    }
+                    else
+                    {
+                        throw new IncorrectObjectIdException();
+                    }
+                }
+                else
+                {
+                    _dataProvider.CountryRepository.Create(bm as Country);
+                }
+            }
         }
 
         public bool Validate(BaseModel model)
         {
             return false;
-        }
-
-        private void CheckAndResolve(BaseModel bm)
-        {
-            if (true)
-            {
-                // todo
-            }
         }
 
         private void SetSerializer(Type type)

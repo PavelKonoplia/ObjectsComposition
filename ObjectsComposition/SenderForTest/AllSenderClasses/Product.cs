@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using ObjectsComposition.Common.Attributes;
 
-namespace ObjectsComposition.Models
+namespace PortSender
 {
     [Serializable]
     public class Product : BaseModel
     {
         public Product() { }
-        
+
+       // public Product(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
         public Product(string name, int batch, string produced, int price)
         {
             Name = name;
@@ -25,7 +26,7 @@ namespace ObjectsComposition.Models
             Price = price;
         }
 
-        [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
+        [Encryption("PortSender.EncryptionService", 1111, 1111)]
         public string Name { get; set; }
 
         public int Batch { get; set; }
