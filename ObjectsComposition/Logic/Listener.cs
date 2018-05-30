@@ -42,7 +42,7 @@ namespace ObjectsComposition.Logic
 
                 try
                 {
-                    _solver.ObjectFromXml(ConvertStringToXml(input));
+                    _solver.Solve(ConvertStringToXml(input));
                     SendResponse(response, 200);
                 }
                 catch (ObjectException ex)

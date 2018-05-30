@@ -5,7 +5,7 @@ namespace ObjectsComposition.Interfaces
 {
     public interface ISolver
     {
-        BaseModel ObjectFromXml(XmlDocument xml);
+        void Solve(XmlDocument xml);
         
         void CreateOrUpdate(BaseModel bm);
     }

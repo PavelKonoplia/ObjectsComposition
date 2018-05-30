@@ -10,6 +10,7 @@ namespace ObjectsCompositionTest
     [TestClass]
     public class SolverTest
     {
+        /*
         [TestMethod]
         public void ObjectFromXml_NotValidXml_Null()
         {
@@ -19,5 +20,6 @@ namespace ObjectsCompositionTest
 
             Assert.IsNull(o);
         }
+        */
     }
 }

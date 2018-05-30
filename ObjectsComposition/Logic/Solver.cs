@@ -24,7 +24,7 @@ namespace ObjectsComposition.Logic
             _dataProvider = new DataProvider(connectionString);
         }
 
-        public BaseModel ObjectFromXml(XmlDocument xml)
+        public void Solve(XmlDocument xml)
         {
             string inputModelxml = xml.DocumentElement.Name;
 
@@ -38,8 +38,6 @@ namespace ObjectsComposition.Logic
                 BaseModel model = (BaseModel)_xmlSerializer.Deserialize(reader);
                 CreateOrUpdate(model);
             }
-
-            return null;
         }
 
         public void CreateOrUpdate(BaseModel bm)
