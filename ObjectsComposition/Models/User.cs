@@ -33,6 +33,7 @@ namespace ObjectsComposition.Models
         [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
         public string Password { get; set; }
 
+        [Encryption("ObjectsComposition.Common.Services.EncryptionService", 1111, 1111)]
         public int Age { get; set; }
     }
 }

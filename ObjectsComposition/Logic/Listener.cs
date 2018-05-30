@@ -52,10 +52,10 @@ namespace ObjectsComposition.Logic
                     ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex));
                 }
                 catch (InvalidOperationException ex)
-                {
-                    SendResponse(response, 400);
+                {                    
                     if (ex.InnerException is ObjectException)
                     {
+                        SendResponse(response, 400);
                         Console.WriteLine(ex.InnerException.Message);
                         ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex.InnerException as ObjectException));
                     }
@@ -63,10 +63,13 @@ namespace ObjectsComposition.Logic
                     {
                         throw ex;
                     }                    
-                }                
+                }               
                 catch (Exception ex)
                 {
-                    throw ex;
+                    Console.WriteLine("Unhandled System Exception:");
+                    Console.WriteLine(ex.Message);
+                    Stop();
+                    break;
                 }
             }
         }
@@ -81,7 +84,8 @@ namespace ObjectsComposition.Logic
         {
             HttpListener.Stop();
             Console.WriteLine("Listening stoped");
-            Console.Read();
+            Console.WriteLine("Press any key to close app...");
+            Console.ReadKey();
         }
 
         private XmlDocument ConvertStringToXml(string stringedXml)

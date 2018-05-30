@@ -65,25 +65,56 @@ namespace ObjectsComposition.Models
             IEncryptionService encryptionService;
             EncryptionAttribute encryptionAttribute;
             reader.MoveToContent();
-            try
+            while (reader.Read())
             {
-                while (reader.Read())
+                if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
+                    PropertyInfo property = type.GetProperty(reader.Name);
+                    FieldInfo field = type.GetField(reader.Name);
+                    if (reader.Read())
                     {
-                        PropertyInfo property = type.GetProperty(reader.Name);
-                        FieldInfo field = type.GetField(reader.Name);
-                        if (reader.Read())
+                        string val = reader.Value;
+                        if (property != null)
                         {
-                            string val = reader.Value;
-                            if (property != null)
+                            if (Attribute.IsDefined(property, typeof(EncryptionAttribute)))
                             {
-                                if (Attribute.IsDefined(property, typeof(EncryptionAttribute)))
+                                encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
+                                encryptionService = encryptionAttribute.EncryptionService;
+
+                                if (Regex.IsMatch(val, @"^[a-zA-Z0-9]+$"))
+                                {
+                                    reader.Close();
+                                    reader.Dispose();
+                                    throw new NoEncryptionException();
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        byte[] bytes = Convert.FromBase64String(val);
+                                        property.SetValue(this, Convert.ChangeType(encryptionService.Decrypt(bytes), property.PropertyType));
+                                    }
+                                    catch
+                                    {
+                                        throw new IncorrectEncryptionException();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                property.SetValue(this, Convert.ChangeType(val, property.PropertyType));
+                            }
+                        }
+                        else
+                        {
+                            if (field != null)
+                            {
+                                if (Attribute.IsDefined(field, typeof(EncryptionAttribute)))
                                 {
                                     encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
                                     encryptionService = encryptionAttribute.EncryptionService;
 
-                                    if (Regex.IsMatch(val, @"^[a-zA-Z]+$"))
+                                    if (Regex.IsMatch(val, @"^[a-zA-Z0-9]+$"))
                                     {
                                         reader.Close();
                                         reader.Dispose();
@@ -91,57 +122,31 @@ namespace ObjectsComposition.Models
                                     }
                                     else
                                     {
-                                        byte[] bytes = Convert.FromBase64String(val);
-                                        var value = encryptionService.Decrypt(bytes);
-                                        property.SetValue(this, encryptionService.Decrypt(bytes));
+                                        try
+                                        {
+                                            byte[] bytes = Convert.FromBase64String(val);
+                                            field.SetValue(this, Convert.ChangeType(encryptionService.Decrypt(bytes), field.FieldType));
+                                        }
+                                        catch
+                                        {
+                                            throw new IncorrectEncryptionException();
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    property.SetValue(this, Convert.ChangeType(val, property.PropertyType));
+                                    field.SetValue(this, Convert.ChangeType(val, field.FieldType));
                                 }
                             }
                             else
                             {
-                                if (field != null)
-                                {
-                                    if (Attribute.IsDefined(field, typeof(EncryptionAttribute)))
-                                    {
-                                        encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
-                                        encryptionService = encryptionAttribute.EncryptionService;
-
-                                        if (Regex.IsMatch(val, @"^[a-zA-Z]+$"))
-                                        {
-                                            reader.Close();
-                                            reader.Dispose();
-                                            throw new NoEncryptionException();
-                                        }
-                                        else
-                                        {
-                                            byte[] bytes = Convert.FromBase64String(val);
-                                            var value = encryptionService.Decrypt(bytes);
-                                            field.SetValue(this, encryptionService.Decrypt(bytes));
-                                        }
-                                    }
-                                    else
-                                    {
-                                        field.SetValue(this, Convert.ChangeType(val, field.FieldType));
-                                    }
-                                }
-                                else
-                                {
-                                    reader.Close();
-                                    reader.Dispose();
-                                    throw new IncorectFormatException();
-                                }
+                                reader.Close();
+                                reader.Dispose();
+                                throw new IncorectFormatException();
                             }
                         }
                     }
                 }
-            }
-            catch (ObjectException ex)
-            {
-                throw ex;
             }
         }
 
