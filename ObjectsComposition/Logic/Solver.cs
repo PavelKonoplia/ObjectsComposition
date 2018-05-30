@@ -37,10 +37,6 @@ namespace ObjectsComposition.Logic
             {
                 BaseModel model = (BaseModel)_xmlSerializer.Deserialize(reader);
                 CreateOrUpdate(model);
-                if (Validate(model))
-                {
-                    return model;
-                }
             }
 
             return null;
