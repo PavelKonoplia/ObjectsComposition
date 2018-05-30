@@ -7,8 +7,6 @@ namespace ObjectsComposition.Interfaces
     {
         BaseModel ObjectFromXml(XmlDocument xml);
         
-        bool Validate(BaseModel model);
-
         void CreateOrUpdate(BaseModel bm);
     }
 }

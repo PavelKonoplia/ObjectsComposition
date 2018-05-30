@@ -131,11 +131,6 @@ namespace ObjectsComposition.Logic
             }
         }
 
-        public bool Validate(BaseModel model)
-        {
-            return false;
-        }
-
         private void SetSerializer(Type type)
         {
             _xmlSerializer = new XmlSerializer(type);

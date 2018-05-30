@@ -10,17 +10,6 @@ namespace ObjectsCompositionTest
     [TestClass]
     public class SolverTest
     {
-
-        [TestMethod]
-        public void Validate_Null_False()
-        {
-            ISolver solver = new Solver();
-            BaseModel o = null;
-            bool valid = solver.Validate(o);
-
-            Assert.IsFalse(valid);
-        }
-
         [TestMethod]
         public void ObjectFromXml_NotValidXml_Null()
         {
