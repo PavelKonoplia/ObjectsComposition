@@ -69,9 +69,6 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <project key="-676618306">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="SolverTest.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2018/05/22 10:22:35.049</styleCop>
@@ -95,4 +92,7 @@
     </timestamps>
     <violations />
   </sourcecode>
+  <project key="-676618306">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
 </stylecopresultscache>

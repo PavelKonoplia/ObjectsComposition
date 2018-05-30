@@ -16,12 +16,10 @@ namespace ObjectsComposition.Logic
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private XmlSerializer _xmlSerializer;
-        private DataProvider _dataProvider;
 
         public Solver()
         {
             SetSerializer(typeof(BaseModel));
-            _dataProvider = new DataProvider(connectionString);
         }
 
         public void Solve(XmlDocument xml)
@@ -50,85 +48,29 @@ namespace ObjectsComposition.Logic
         public void CreateOrUpdate(BaseModel bm)
         {
             BaseModel item;
+            Type repoType = typeof(CommandRunner<>);
+            object runner = Activator.CreateInstance(repoType.MakeGenericType(bm.GetType()), connectionString);
+            Type runnerType = runner.GetType();
 
-            if (bm is User)
+            MethodInfo updateMethodInfo = runnerType.GetMethod("Update");
+            MethodInfo createMethodInfo = runnerType.GetMethod("Create");
+            MethodInfo getMethodInfo = runnerType.GetMethod("GetItemById");
+
+            if (bm.Id != 0)
             {
-                if (bm.Id != 0)
+                item = (BaseModel)getMethodInfo.Invoke(runner, new object[] { bm.Id });
+                if (item != null)
                 {
-                    item = _dataProvider.UserRepository.GetItemById(bm.Id);
-                    if (item != null)
-                    {
-                        _dataProvider.UserRepository.Update(bm as User);
-                    }
-                    else
-                    {
-                        throw new IncorrectObjectIdException();
-                    }
+                    updateMethodInfo.Invoke(runner, new object[] { bm });
                 }
                 else
                 {
-                    _dataProvider.UserRepository.Create(bm as User);
+                    throw new IncorrectObjectIdException();
                 }
             }
-
-            if (bm is Manufacter)
+            else
             {
-                if (bm.Id != 0)
-                {
-                    item = _dataProvider.ManufacterRepository.GetItemById(bm.Id);
-                    if (item != null)
-                    {
-                        _dataProvider.ManufacterRepository.Update(bm as Manufacter);
-                    }
-                    else
-                    {
-                        throw new IncorrectObjectIdException();
-                    }
-                }
-                else
-                {
-                    _dataProvider.ManufacterRepository.Create(bm as Manufacter);
-                }
-            }
-
-            if (bm is Product)
-            {
-                if (bm.Id != 0)
-                {
-                    item = _dataProvider.ProductRepository.GetItemById(bm.Id);
-                    if (item != null)
-                    {
-                        _dataProvider.ProductRepository.Update(bm as Product);
-                    }
-                    else
-                    {
-                        throw new IncorrectObjectIdException();
-                    }
-                }
-                else
-                {
-                    _dataProvider.ProductRepository.Create(bm as Product);
-                }
-            }
-
-            if (bm is Country)
-            {
-                if (bm.Id != 0)
-                {
-                    item = _dataProvider.CountryRepository.GetItemById(bm.Id);
-                    if (item != null)
-                    {
-                        _dataProvider.CountryRepository.Update(bm as Country);
-                    }
-                    else
-                    {
-                        throw new IncorrectObjectIdException();
-                    }
-                }
-                else
-                {
-                    _dataProvider.CountryRepository.Create(bm as Country);
-                }
+                createMethodInfo.Invoke(runner, new object[] { bm });
             }
         }
 
