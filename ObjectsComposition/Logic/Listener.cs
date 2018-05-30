@@ -48,6 +48,7 @@ namespace ObjectsComposition.Logic
                 catch (ObjectException ex)
                 {
                     SendResponse(response, 400);
+                    Console.WriteLine(ex.Message);
                     ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex));
                 }
                 catch (InvalidOperationException ex)
@@ -55,6 +56,7 @@ namespace ObjectsComposition.Logic
                     SendResponse(response, 400);
                     if (ex.InnerException is ObjectException)
                     {
+                        Console.WriteLine(ex.InnerException.Message);
                         ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex.InnerException as ObjectException));
                     }
                     else

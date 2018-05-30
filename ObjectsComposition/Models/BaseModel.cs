@@ -65,45 +65,20 @@ namespace ObjectsComposition.Models
             IEncryptionService encryptionService;
             EncryptionAttribute encryptionAttribute;
             reader.MoveToContent();
-            while (reader.Read())
+            try
             {
-                if (reader.NodeType == XmlNodeType.Element)
+                while (reader.Read())
                 {
-                    PropertyInfo property = type.GetProperty(reader.Name);
-                    FieldInfo field = type.GetField(reader.Name);
-                    if (reader.Read())
+                    if (reader.NodeType == XmlNodeType.Element)
                     {
-                        string val = reader.Value;
-                        if (property != null)
+                        PropertyInfo property = type.GetProperty(reader.Name);
+                        FieldInfo field = type.GetField(reader.Name);
+                        if (reader.Read())
                         {
-                            if (Attribute.IsDefined(property, typeof(EncryptionAttribute)))
+                            string val = reader.Value;
+                            if (property != null)
                             {
-                                encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
-                                encryptionService = encryptionAttribute.EncryptionService;
-
-                                if (Regex.IsMatch(val, @"^[a-zA-Z]+$"))
-                                {
-                                    reader.Close();
-                                    reader.Dispose();
-                                    throw new NoEncryptionException();
-                                }
-                                else
-                                {
-                                    byte[] bytes = Convert.FromBase64String(val);
-                                    var value = encryptionService.Decrypt(bytes);
-                                    property.SetValue(this, encryptionService.Decrypt(bytes));
-                                }
-                            }
-                            else
-                            {
-                                property.SetValue(this, Convert.ChangeType(val, property.PropertyType));
-                            }
-                        }
-                        else
-                        {
-                            if (field != null)
-                            {
-                                if (Attribute.IsDefined(field, typeof(EncryptionAttribute)))
+                                if (Attribute.IsDefined(property, typeof(EncryptionAttribute)))
                                 {
                                     encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
                                     encryptionService = encryptionAttribute.EncryptionService;
@@ -118,23 +93,55 @@ namespace ObjectsComposition.Models
                                     {
                                         byte[] bytes = Convert.FromBase64String(val);
                                         var value = encryptionService.Decrypt(bytes);
-                                        field.SetValue(this, encryptionService.Decrypt(bytes));
+                                        property.SetValue(this, encryptionService.Decrypt(bytes));
                                     }
                                 }
                                 else
                                 {
-                                    field.SetValue(this, Convert.ChangeType(val, field.FieldType));
+                                    property.SetValue(this, Convert.ChangeType(val, property.PropertyType));
                                 }
                             }
                             else
                             {
-                                reader.Close();
-                                reader.Dispose();
-                                throw new IncorectFormatException();
+                                if (field != null)
+                                {
+                                    if (Attribute.IsDefined(field, typeof(EncryptionAttribute)))
+                                    {
+                                        encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;
+                                        encryptionService = encryptionAttribute.EncryptionService;
+
+                                        if (Regex.IsMatch(val, @"^[a-zA-Z]+$"))
+                                        {
+                                            reader.Close();
+                                            reader.Dispose();
+                                            throw new NoEncryptionException();
+                                        }
+                                        else
+                                        {
+                                            byte[] bytes = Convert.FromBase64String(val);
+                                            var value = encryptionService.Decrypt(bytes);
+                                            field.SetValue(this, encryptionService.Decrypt(bytes));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        field.SetValue(this, Convert.ChangeType(val, field.FieldType));
+                                    }
+                                }
+                                else
+                                {
+                                    reader.Close();
+                                    reader.Dispose();
+                                    throw new IncorectFormatException();
+                                }
                             }
                         }
                     }
                 }
+            }
+            catch (ObjectException ex)
+            {
+                throw ex;
             }
         }
 

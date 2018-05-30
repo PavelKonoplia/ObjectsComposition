@@ -29,9 +29,16 @@ namespace ObjectsComposition.Logic
             string inputModelxml = xml.DocumentElement.Name;
 
             Assembly ass = Assembly.GetExecutingAssembly();
-            ObjectHandle objectHandle = Activator.CreateInstance(ass.FullName, $"{typeof(BaseModel).Namespace}.{inputModelxml}");
-            BaseModel inputModel = (BaseModel)objectHandle.Unwrap();
-            SetSerializer(inputModel.GetType());
+            try
+            {
+                ObjectHandle objectHandle = Activator.CreateInstance(ass.FullName, $"{typeof(BaseModel).Namespace}.{inputModelxml}");
+                BaseModel inputModel = (BaseModel)objectHandle.Unwrap();
+                SetSerializer(inputModel.GetType());
+            }
+            catch
+            {
+                throw new IncorectFormatException();
+            }
 
             using (XmlReader reader = new XmlNodeReader(xml))
             {
