@@ -8,11 +8,11 @@ namespace ObjectsComposition.Common.Attributes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class EncryptionAttribute : Attribute
     {
-        public IEncryptionService EncryptionService;
+        public IEncryptionService EncryptionService { get; set; }
 
         public EncryptionAttribute(string serviceName, params int[] parameters)
         {
-            SetService(serviceName, parameters);
+            this.SetService(serviceName, parameters);
         }
 
         private void SetService(string serviceName, params int[] parameters)
@@ -21,7 +21,7 @@ namespace ObjectsComposition.Common.Attributes
             {
                 Type service = Assembly.GetExecutingAssembly().GetType(serviceName);
                 ConstructorInfo[] constructorInfo = service.GetConstructors();
-                EncryptionService = constructorInfo[0].Invoke(parameters.Cast<object>().ToArray()) as IEncryptionService;
+                this.EncryptionService = constructorInfo[0].Invoke(parameters.Cast<object>().ToArray()) as IEncryptionService;
             }
             catch (Exception ex)
             {

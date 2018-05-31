@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Runtime.Serialization;
-using System.Xml;
 using ObjectsComposition.Common;
 using ObjectsComposition.Interfaces;
 using ObjectsComposition.Logic.DbLogic;
@@ -54,7 +52,7 @@ namespace ObjectsComposition.Logic
                     _happenedExceptionRepository.Create(new HappenedException(ex));
                 }
                 catch (InvalidOperationException ex)
-                {                    
+                {
                     if (ex.InnerException is ObjectException)
                     {
                         SendResponse(response, 400);
@@ -64,8 +62,8 @@ namespace ObjectsComposition.Logic
                     else
                     {
                         throw ex;
-                    }                    
-                }               
+                    }
+                }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Unhandled System Exception:");

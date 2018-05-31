@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using ObjectsComposition.Common.Attributes;
 
 namespace ObjectsComposition.Models
@@ -8,7 +7,7 @@ namespace ObjectsComposition.Models
     public class Product : BaseModel
     {
         public Product() { }
-        
+
         public Product(string name, int batch, string produced, int price)
         {
             Name = name;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using ObjectsComposition.Common.Attributes;
 
 namespace ObjectsComposition.Models
@@ -8,7 +7,7 @@ namespace ObjectsComposition.Models
     public class User : BaseModel
     {
         public User() : base() { }
-        
+
         public User(string name, string login, string password, int age) : base()
         {
             Name = name;

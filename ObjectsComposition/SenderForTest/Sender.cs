@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ObjectsComposition.SenderForTest
+﻿namespace ObjectsComposition.SenderForTest
 {
     public class Sender
     {
@@ -20,16 +14,16 @@ namespace ObjectsComposition.SenderForTest
             string xml = "";
 
             XmlSerializer formatter = new XmlSerializer(typeof(User));
-    
+
             using (var sww = new StringWriter())
             {
                 using (XmlWriter writer = XmlWriter.Create(sww))
                 {
                     formatter.Serialize(writer, person);
-                    xml = sww.ToString(); 
+                    xml = sww.ToString();
                 }
             }
-            
+
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             SendXML(doc);

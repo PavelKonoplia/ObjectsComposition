@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using ObjectsComposition.Common;
 using ObjectsComposition.Interfaces;
 
 namespace ObjectsComposition.Logic.DbLogic
@@ -53,7 +51,7 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public T GetItemById(int id)
         {
-            string condition = "";
+            string condition = null;
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             for (int i = 0; i < propsInfo.Length; i++)
@@ -65,7 +63,7 @@ namespace ObjectsComposition.Logic.DbLogic
                 }
             }
 
-            string sqlExpression = $"SELECT * FROM { tableName } WHERE {condition}";
+            string sqlExpression = $"SELECT * FROM {tableName} WHERE {condition}";
             T item = new T();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -99,7 +97,7 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public int Create(T item)
         {
-            string columns = "", props = "", tempProp;
+            string columns = null, props = null, tempProp;
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             for (int i = 0; i < propsInfo.Length; i++)
@@ -133,7 +131,6 @@ namespace ObjectsComposition.Logic.DbLogic
                 try
                 {
                     command.ExecuteNonQuery();
-                    var res = (int)resultId.ExecuteScalar();
                     return (int)resultId.ExecuteScalar();
                 }
                 catch (Exception e)
@@ -145,7 +142,7 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public void Update(T item)
         {
-            string props = "", condition = "", tempProp;
+            string props = null, condition = null, tempProp;
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             for (int i = 0; i < propsInfo.Length; i++)
@@ -156,7 +153,7 @@ namespace ObjectsComposition.Logic.DbLogic
                     continue;
                 }
 
-                props += (i != 0 && i != propsInfo.Length - 1) ? "," : "";
+                props += (i != 0 && i != propsInfo.Length - 1) ? "," : null;
                 tempProp = propsInfo[i].PropertyType.ToString().Contains("String")
                      ? "\'" + GetPropValue(item, propsInfo[i].Name) + "\'"
                      : GetPropValue(item, propsInfo[i].Name).ToString();
@@ -183,7 +180,7 @@ namespace ObjectsComposition.Logic.DbLogic
 
         public void Delete(int id)
         {
-            string condition = "";
+            string condition = null;
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             for (int i = 0; i < propsInfo.Length; i++)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.IO;
 using System.Reflection;
 using System.Runtime.Remoting;
 using System.Xml;
@@ -14,7 +12,7 @@ namespace ObjectsComposition.Logic
 {
     public class Solver : ISolver
     {
-        private string _connectionString ;
+        private string _connectionString;
         private XmlSerializer _xmlSerializer;
 
         public Solver(string connectionString)

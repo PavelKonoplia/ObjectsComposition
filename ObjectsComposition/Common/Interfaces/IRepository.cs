@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ObjectsComposition.Models;
 
 namespace ObjectsComposition.Interfaces
 {

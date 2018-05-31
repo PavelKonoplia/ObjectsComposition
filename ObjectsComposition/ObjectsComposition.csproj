@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\StyleCop\Nix.StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\StyleCop\Nix.StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -51,6 +53,7 @@
     <Compile Include="Common\Interfaces\IRepository.cs" />
     <Compile Include="Common\Interfaces\ISolver.cs" />
     <Compile Include="Common\Services\EncryptionService.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Logic\DbLogic\CommandRunner.cs" />
     <Compile Include="Logic\Listener.cs" />
     <Compile Include="Logic\Solver.cs" />
@@ -65,10 +68,22 @@
     <Compile Include="SenderForTest\Sender.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\StyleCop\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SenderForTest\AllSenderClasses\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AsyncFixer.1.1.5\analyzers\dotnet\cs\AsyncFixer.dll" />
+    <Analyzer Include="..\packages\Nix.StyleCop.Analyzers.1.0.19\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\Nix.StyleCop.Analyzers.1.0.19\analyzers\dotnet\cs\Nix.StyleCop.Analyzers.dll" />
+    <Analyzer Include="..\packages\Nix.StyleCop.Analyzers.1.0.19\analyzers\dotnet\cs\Nix.StyleCop.CodeFixProviders.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
