@@ -13,10 +13,12 @@ namespace ObjectsComposition.Logic
     public class Listener : IListener
     {
         private ISolver _solver;
+        private IRepository<HappenedException> _happenedExceptionRepository;
 
-        public Listener(string url)
+        public Listener(string url, string connectionString)
         {
-            _solver = new Solver();
+            _solver = new Solver(connectionString);
+            _happenedExceptionRepository = new CommandRunner<HappenedException>(connectionString);
             HttpListener = new HttpListener();
             HttpListener.Prefixes.Add(url);
         }
@@ -42,14 +44,14 @@ namespace ObjectsComposition.Logic
 
                 try
                 {
-                    _solver.Solve(ConvertStringToXml(input));
+                    _solver.Solve(input);
                     SendResponse(response, 200);
                 }
                 catch (ObjectException ex)
                 {
                     SendResponse(response, 400);
                     Console.WriteLine(ex.Message);
-                    ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex));
+                    _happenedExceptionRepository.Create(new HappenedException(ex));
                 }
                 catch (InvalidOperationException ex)
                 {                    
@@ -57,7 +59,7 @@ namespace ObjectsComposition.Logic
                     {
                         SendResponse(response, 400);
                         Console.WriteLine(ex.InnerException.Message);
-                        ExceptionProvider.HappenedExceptionRepository.Create(new HappenedException(ex.InnerException as ObjectException));
+                        _happenedExceptionRepository.Create(new HappenedException(ex.InnerException as ObjectException));
                     }
                     else
                     {
@@ -86,25 +88,6 @@ namespace ObjectsComposition.Logic
             Console.WriteLine("Listening stoped");
             Console.WriteLine("Press any key to close app...");
             Console.ReadKey();
-        }
-
-        private XmlDocument ConvertStringToXml(string stringedXml)
-        {
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(stringedXml);
-                if (doc == null)
-                {
-                    throw new IncorectFormatException();
-                }
-
-                return doc;
-            }
-            catch (Exception)
-            {
-                throw new IncorectFormatException();
-            }
         }
     }
 }

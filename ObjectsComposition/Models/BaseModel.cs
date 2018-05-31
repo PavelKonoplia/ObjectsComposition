@@ -83,8 +83,6 @@ namespace ObjectsComposition.Models
 
                                 if (Regex.IsMatch(val, @"^[a-zA-Z0-9]+$"))
                                 {
-                                    reader.Close();
-                                    reader.Dispose();
                                     throw new NoEncryptionException();
                                 }
                                 else
@@ -116,8 +114,6 @@ namespace ObjectsComposition.Models
 
                                     if (Regex.IsMatch(val, @"^[a-zA-Z0-9]+$"))
                                     {
-                                        reader.Close();
-                                        reader.Dispose();
                                         throw new NoEncryptionException();
                                     }
                                     else
@@ -140,8 +136,6 @@ namespace ObjectsComposition.Models
                             }
                             else
                             {
-                                reader.Close();
-                                reader.Dispose();
                                 throw new IncorectFormatException();
                             }
                         }

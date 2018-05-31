@@ -19,7 +19,6 @@ namespace ObjectsCompositionTest
             BaseModel o = solver.ObjectFromXml(notValidXml);
 
             Assert.IsNull(o);
-        }
-        */
+        }    */    
     }
 }

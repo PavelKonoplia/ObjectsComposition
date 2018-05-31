@@ -14,16 +14,18 @@ namespace ObjectsComposition.Logic
 {
     public class Solver : ISolver
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private string _connectionString ;
         private XmlSerializer _xmlSerializer;
 
-        public Solver()
+        public Solver(string connectionString)
         {
+            _connectionString = connectionString;
             SetSerializer(typeof(BaseModel));
         }
 
-        public void Solve(XmlDocument xml)
+        public void Solve(string xmlString)
         {
+            XmlDocument xml = ConvertStringToXml(xmlString);
             string inputModelxml = xml.DocumentElement.Name;
 
             Assembly ass = Assembly.GetExecutingAssembly();
@@ -49,7 +51,7 @@ namespace ObjectsComposition.Logic
         {
             BaseModel item;
             Type repoType = typeof(CommandRunner<>);
-            object runner = Activator.CreateInstance(repoType.MakeGenericType(bm.GetType()), connectionString);
+            object runner = Activator.CreateInstance(repoType.MakeGenericType(bm.GetType()), _connectionString);
             Type runnerType = runner.GetType();
 
             MethodInfo updateMethodInfo = runnerType.GetMethod("Update");
@@ -71,6 +73,25 @@ namespace ObjectsComposition.Logic
             else
             {
                 createMethodInfo.Invoke(runner, new object[] { bm });
+            }
+        }
+
+        public XmlDocument ConvertStringToXml(string stringedXml)
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(stringedXml);
+                if (doc == null)
+                {
+                    throw new IncorectFormatException();
+                }
+
+                return doc;
+            }
+            catch (Exception)
+            {
+                throw new IncorectFormatException();
             }
         }
 

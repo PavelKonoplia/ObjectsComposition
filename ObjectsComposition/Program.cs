@@ -1,4 +1,5 @@
-﻿using ObjectsComposition.Logic;
+﻿using System.Configuration;
+using ObjectsComposition.Logic;
 
 namespace ObjectsComposition
 {
@@ -7,8 +8,9 @@ namespace ObjectsComposition
         public static void Main(string[] args)
         {
             string port = "http://localhost:8888/";
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            Listener listener = new Listener(port);
+            Listener listener = new Listener(port, connectionString);
 
             listener.Listen();
         }

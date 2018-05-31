@@ -11,8 +11,9 @@ namespace ObjectsCompositionTest
         public void Listen_url_start_IsListening()
         {
             string testUrl = "http://localhost:8888/connection/";
+            string connectionString = "Data Source = KONOPLIA; Initial Catalog = ObjectsComposition; Integrated Security = True";
 
-            IListener listener = new Listener(testUrl);
+            IListener listener = new Listener(testUrl, connectionString);
 
             listener.Listen();
 

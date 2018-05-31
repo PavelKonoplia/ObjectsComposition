@@ -5,8 +5,10 @@ namespace ObjectsComposition.Interfaces
 {
     public interface ISolver
     {
-        void Solve(XmlDocument xml);
-        
+        void Solve(string xmlString);
+
+        XmlDocument ConvertStringToXml(string xmlString);
+
         void CreateOrUpdate(BaseModel bm);
     }
 }
