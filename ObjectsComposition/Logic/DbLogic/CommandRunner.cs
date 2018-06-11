@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
@@ -21,7 +22,7 @@ namespace ObjectsComposition.Logic.DbLogic
         public IEnumerable<T> GetItems()
         {
             string sqlExpression = $"SELECT * FROM {tableName}";
-            Common.Collection<T> items = new Common.Collection<T>();
+            Collection<T> items = new Collection<T>();
             PropertyInfo[] propsInfo = typeT.GetProperties();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))

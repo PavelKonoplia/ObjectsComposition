@@ -101,6 +101,7 @@ namespace ObjectsComposition.Models
             IEncryptionService encryptionService;
             EncryptionAttribute encryptionAttribute;
             string val = reader.Value;
+
             if (Attribute.IsDefined(property, typeof(EncryptionAttribute)))
             {
                 encryptionAttribute = Attribute.GetCustomAttribute(property, typeof(EncryptionAttribute)) as EncryptionAttribute;

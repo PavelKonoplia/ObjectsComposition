@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ObjectsComposition.Interfaces;
-using ObjectsComposition.Logic.DbLogic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectsCompositionTest
 {
